@@ -1,6 +1,6 @@
-# BorrowLoop
+# CampusMart
 
-BorrowLoop is a campus borrowing and renting marketplace built with Node.js, Express, MySQL, EJS, Bootstrap 5, and Lucide icons. Students can browse listings, register and log in, publish items with photos, request date ranges, and manage requests from a dashboard. Optional Gemini-powered natural-language search helps translate a description of what a student needs into relevant MySQL search terms and filters.
+CampusMart is a campus borrowing and renting marketplace built with Node.js, Express, MySQL, EJS, Bootstrap 5, and Lucide icons. Students can browse listings, register and log in, publish items with photos, request date ranges, and manage requests from a dashboard. Optional Gemini-powered natural-language search helps translate a description of what a student needs into relevant MySQL search terms and filters.
 
 Accounts, categories, listings, and borrow requests are stored in MySQL. Uploaded item photos are stored in the project's `uploads` folder; MySQL stores each photo path. The starter database includes sample listing records so the app has content on first launch.
 
