@@ -1,0 +1,45 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/navbar") %>
+<main class="container page-space">
+  <%- include("../partials/alerts") %>
+  <div class="page-intro"><span class="eyebrow">Campus collection</span><h1 class="page-title mt-2">Explore items</h1><p>Useful things shared by students around you.</p></div>
+  <form class="filter-bar row g-2 align-items-center mb-3" action="/items/ai-search" method="post">
+    <div class="col-md"><label class="visually-hidden" for="filterSearch">Search items</label><div class="input-with-icon"><i data-lucide="search"></i><input id="filterSearch" class="form-control" type="search" name="q" value="<%= filters.q %>" placeholder="Try “free graphing calculator for exams”"></div></div>
+    <div class="col-sm-6 col-md-3"><label class="visually-hidden" for="categorySelect">Category</label><select class="form-select" id="categorySelect" name="category"><option value="">All categories</option><% categories.forEach(category => { %><option value="<%= category.name %>" <%= filters.category === category.name ? 'selected' : '' %>><%= category.name %></option><% }) %></select></div>
+    <div class="col-sm-6 col-md-2"><label class="visually-hidden" for="priceSelect">Price</label><select class="form-select" id="priceSelect" name="price"><option value="">Any price</option><option value="free" <%= filters.price === 'free' ? 'selected' : '' %>>Free</option><option value="paid" <%= filters.price === 'paid' ? 'selected' : '' %>>Paid</option></select></div>
+    <div class="col-auto"><button class="btn btn-primary" type="submit"><i data-lucide="sparkles" class="icon-sm me-1"></i>Search</button></div>
+    <% if (filters.q || filters.category || filters.price) { %><div class="col-auto"><a class="btn btn-outline-secondary" href="/items">Clear</a></div><% } %>
+  </form>
+  <% if (aiNotice) { %><div class="alert <%= aiNotice.startsWith('AI search understood:') ? 'alert-info' : 'alert-warning' %> py-2 small" role="status"><%= aiNotice %></div><% } %>
+  <% if (typeof aiSearch !== "undefined" && aiSearch) { %>
+    <p class="results-count"><%= bestMatches.length %> ranked match<%= bestMatches.length === 1 ? '' : 'es' %>; <%= otherListings.length %> other available <%= otherListings.length === 1 ? 'item' : 'items' %>. Match percentages are approximate.</p>
+    <% if (bestMatches.length) { %>
+      <section class="mb-5" aria-labelledby="bestMatchesHeading">
+        <div class="d-flex align-items-center gap-2 mb-3"><i data-lucide="sparkles" class="icon-sm text-primary"></i><h2 class="h5 mb-0" id="bestMatchesHeading">Best matches</h2></div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-lg-4">
+          <% bestMatches.forEach(item => { %><div class="col"><%- include("../partials/item-card", { item }) %></div><% }) %>
+        </div>
+      </section>
+    <% } %>
+    <% if (otherListings.length) { %>
+      <section aria-labelledby="otherItemsHeading">
+        <div class="d-flex align-items-center gap-2 mb-3"><h2 class="h5 mb-0" id="otherItemsHeading"><%= bestMatches.length ? 'More available items' : 'Available items' %></h2></div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-lg-4">
+          <% otherListings.forEach(item => { %><div class="col"><%- include("../partials/item-card", { item }) %></div><% }) %>
+        </div>
+      </section>
+    <% } %>
+    <% if (!bestMatches.length && !otherListings.length) { %>
+      <div class="empty-state"><i data-lucide="search-x"></i><h2>No available items</h2><p>Try removing a category or price filter, or check back later.</p><a class="btn btn-outline-primary" href="/items">Show all items</a></div>
+    <% } %>
+  <% } else if (listings.length) { %>
+    <p class="results-count"><%= listings.length %> <%= listings.length === 1 ? 'item' : 'items' %> to explore</p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-lg-4">
+      <% listings.forEach(item => { %><div class="col"><%- include("../partials/item-card", { item }) %></div><% }) %>
+    </div>
+  <% } else { %>
+    <p class="results-count">0 items to explore</p>
+    <div class="empty-state"><i data-lucide="search-x"></i><h2>No matching items</h2><p>Try a different search or clear your filters.</p><a class="btn btn-outline-primary" href="/items">Show all items</a></div>
+  <% } %>
+</main>
+<%- include("../partials/footer") %>

@@ -1,0 +1,20 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/navbar") %>
+<main class="auth-page container">
+  <div class="auth-card">
+    <a class="brand auth-brand mb-4" href="/"><span class="brand-mark"><i data-lucide="graduation-cap" class="brand-cap"></i><i data-lucide="shopping-cart" class="brand-cart"></i></span><span class="brand-copy"><strong>CampusMart</strong><small>Buy <span>•</span> Sell <span>•</span> Connect</small></span></a>
+    <span class="eyebrow">Good to have you back</span>
+    <h1 class="h3 fw-semibold mt-2">Welcome back</h1>
+    <p class="text-secondary mb-4">Log in to your campus community.</p>
+    <%- include("../partials/alerts") %>
+    <% if (typeof error !== 'undefined') { %><div class="alert alert-danger" role="alert"><%= error %></div><% } %>
+    <form action="/login" method="post">
+      <div class="mb-3"><label class="form-label" for="email">Campus email</label><input class="form-control" id="email" name="email" type="email" autocomplete="email" value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>" placeholder="you@college.edu" required></div>
+      <div class="mb-3"><label class="form-label" for="password">Password</label><div class="password-input"><input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required><button type="button" class="password-toggle" data-toggle-password aria-label="Show password"><i data-lucide="eye"></i></button></div></div>
+      <button class="btn btn-primary w-100 mt-2" type="submit">Log in</button>
+    </form>
+    <p class="auth-switch">New to CampusMart? <a href="/register">Create an account</a></p>
+    <div class="demo-hint mt-4"><strong>Demo account</strong><br>Email: demo@borrowloop.test<br>Password: borrowloop123</div>
+  </div>
+</main>
+<%- include("../partials/footer") %>

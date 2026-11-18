@@ -1,0 +1,42 @@
+<%- include("partials/head", { title }) %>
+<%- include("partials/navbar") %>
+<main class="container page-space">
+  <%- include("partials/alerts") %>
+  <div class="page-intro"><span class="eyebrow">Campus overview</span><h1 class="page-title mt-2">Admin dashboard</h1><p>A simple overview of CampusMart activity.</p></div>
+  <div class="row g-3 mb-5">
+    <div class="col-sm-6 col-lg-3"><article class="stat-card"><span>Students</span><strong><%= stats.user_count %></strong></article></div>
+    <div class="col-sm-6 col-lg-3"><article class="stat-card"><span>Total listings</span><strong><%= stats.listing_count %></strong></article></div>
+    <div class="col-sm-6 col-lg-3"><article class="stat-card"><span>Available listings</span><strong><%= stats.available_count %></strong></article></div>
+    <div class="col-sm-6 col-lg-3"><article class="stat-card"><span>Pending requests</span><strong><%= stats.pending_count %></strong></article></div>
+  </div>
+
+  <section class="dashboard-section mb-5">
+    <div class="mb-3"><span class="eyebrow">Marketplace</span><h2 class="h5 fw-semibold mt-1 mb-0">Recent listings</h2></div>
+    <% if (listings.length) { %>
+      <div class="table-responsive surface-card"><table class="table align-middle mb-0">
+        <thead><tr><th>Item</th><th>Owner</th><th>Category</th><th>Listed</th><th>Status</th><th></th></tr></thead>
+        <tbody><% listings.forEach(item => { %><tr>
+          <td><a class="table-item-link" href="/items/<%= item.id %>"><%= item.title %></a></td><td><%= item.owner_name %></td><td><%= item.category_name %></td><td><%= item.created_at.toLocaleDateString() %></td>
+          <td><span class="status-pill <%= item.is_available ? 'status-available' : 'status-paused' %>"><%= item.is_available ? 'Available' : 'Paused' %></span></td>
+          <td><form action="/admin/listings/<%= item.id %>/availability" method="post"><input type="hidden" name="is_available" value="<%= item.is_available ? 'false' : 'true' %>"><button class="btn btn-sm btn-outline-primary" type="submit"><%= item.is_available ? 'Pause' : 'Relist' %></button></form></td>
+        </tr><% }) %></tbody>
+      </table></div>
+    <% } else { %><div class="surface-card p-4 text-secondary small">There are no marketplace listings yet.</div><% } %>
+  </section>
+
+  <section class="dashboard-section mb-5">
+    <div class="mb-3"><span class="eyebrow">Community</span><h2 class="h5 fw-semibold mt-1 mb-0">Recently joined</h2></div>
+    <div class="table-responsive surface-card"><table class="table align-middle mb-0">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+      <tbody><% users.forEach(member => { %><tr><td><%= member.full_name %></td><td><%= member.university_email %></td><td><span class="status-pill <%= member.role === 'admin' ? 'status-approved' : 'status-paused' %>"><%= member.role %></span></td><td><%= member.created_at.toLocaleDateString() %></td></tr><% }) %></tbody>
+    </table></div>
+  </section>
+
+  <section class="dashboard-section">
+    <div class="mb-3"><span class="eyebrow">Borrowing activity</span><h2 class="h5 fw-semibold mt-1 mb-0">Recent requests</h2></div>
+    <% if (requests.length) { %><div class="request-list">
+      <% requests.forEach(request => { %><article class="request-card"><div class="request-copy"><a class="table-item-link" href="/items/<%= request.listing_id %>"><%= request.listing_title %></a><span><%= request.borrower_name %> requested it from <%= request.owner_name %></span><span><%= request.request_from.toISOString().slice(0,10) %> – <%= request.request_to.toISOString().slice(0,10) %></span></div><div class="request-actions"><span class="status-pill status-<%= request.status %>"><%= request.status %></span></div></article><% }) %>
+    </div><% } else { %><div class="surface-card p-4 text-secondary small">No borrowing requests yet.</div><% } %>
+  </section>
+</main>
+<%- include("partials/footer") %>

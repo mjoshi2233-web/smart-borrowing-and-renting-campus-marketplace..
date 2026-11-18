@@ -1,0 +1,77 @@
+<%- include("partials/head", { title }) %>
+<%- include("partials/navbar") %>
+<main>
+  <section class="hero-section">
+    <div class="container py-4 py-lg-5">
+      <div class="hero-banner">
+        <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-6 hero-copy">
+          <span class="eyebrow"><i data-lucide="users-round" class="icon-sm"></i> Made for your campus community</span>
+          <h1 class="display-title mt-3">The ultimate marketplace <span>for your campus.</span></h1>
+          <p class="lead-copy mt-3">Buy, sell and connect with students around you. Find useful things nearby and make campus life a little easier.</p>
+          <form class="hero-search mt-4" action="/items/ai-search" method="post" role="search">
+            <label class="visually-hidden" for="heroSearch">Search items</label>
+            <i data-lucide="search"></i>
+            <input id="heroSearch" name="q" type="search" placeholder="What are you looking for today?">
+            <button class="btn btn-primary" type="submit">Find items</button>
+          </form>
+          <div class="hero-actions mt-4"><a class="btn btn-light" href="/items">Start shopping <i data-lucide="arrow-up-right" class="icon-sm ms-1"></i></a><span><i data-lucide="sparkles" class="icon-sm"></i> Smart search finds relevant listings</span></div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-image hero-market-image">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&amp;fit=crop&amp;w=1200&amp;q=85" alt="Students studying and sharing ideas on campus">
+            <div class="hero-note"><span class="note-icon"><i data-lucide="graduation-cap"></i></span><span><strong>Your campus, connected.</strong><small>Good finds. Great community.</small></span></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container section-space" id="categories">
+    <div class="section-heading d-flex justify-content-between align-items-end gap-3 mb-4">
+      <div><span class="eyebrow">Find your thing</span><h2 class="section-title mt-2 mb-0">Browse by category</h2></div>
+      <a class="simple-link" href="/items">Explore everything <i data-lucide="arrow-right" class="icon-sm"></i></a>
+    </div>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-3">
+      <% categories.forEach(category => { %>
+        <div class="col"><a class="category-card" href="/items?category=<%= encodeURIComponent(category.name) %>">
+          <span class="category-icon"><i data-lucide="<%= category.icon %>"></i></span><span><%= category.name %></span>
+        </a></div>
+      <% }) %>
+    </div>
+  </section>
+
+  <section class="featured-section section-space">
+    <div class="container">
+      <div class="section-heading d-flex justify-content-between align-items-end gap-3 mb-4">
+        <div><span class="eyebrow">Around campus</span><h2 class="section-title mt-2 mb-1">Find your next great find</h2><p class="text-secondary mb-0">Useful things shared by students like you.</p></div>
+        <a class="simple-link" href="/items">See all items <i data-lucide="arrow-right" class="icon-sm"></i></a>
+      </div>
+      <% if (listings.length) { %>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-lg-4">
+          <% listings.forEach(item => { %><div class="col"><%- include("partials/item-card", { item }) %></div><% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state"><i data-lucide="package-open"></i><h3>No listings yet</h3><p>Be the first to share something useful with your campus.</p><a class="btn btn-primary" href="<%= user ? '/dashboard' : '/register' %>">Share an item</a></div>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="container section-space">
+    <div class="community-banner row g-0 align-items-stretch">
+      <div class="col-md-6 community-image"><img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="Campus students coming together"></div>
+      <div class="col-md-6 community-copy"><span class="eyebrow">More than a marketplace</span><h2 class="section-title mt-2">Explore. Trade. Grow.</h2><p>A marketplace built for our campus community. Find what you need and share what you no longer do.</p><a class="btn btn-primary" href="<%= user ? '/dashboard' : '/register' %>">Join CampusMart <i data-lucide="arrow-right" class="icon-sm ms-1"></i></a></div>
+    </div>
+  </section>
+
+  <section class="container section-space" id="how-it-works">
+    <div class="mb-4"><span class="eyebrow">A better way to get what you need</span><h2 class="section-title mt-2 mb-0">Borrowing is simple</h2></div>
+    <div class="row g-4">
+      <div class="col-md-4"><article class="step-card"><span class="step-number">01</span><h3>Find something nearby</h3><p>Search student-shared items by name or browse categories to see what's available.</p></article></div>
+      <div class="col-md-4"><article class="step-card"><span class="step-number">02</span><h3>Ask the owner</h3><p>Choose your dates and send a request. Agree on a convenient campus pickup spot.</p></article></div>
+      <div class="col-md-4"><article class="step-card"><span class="step-number">03</span><h3>Use it, return it</h3><p>Take good care of what you borrow, then return it when you said you would.</p></article></div>
+    </div>
+  </section>
+</main>
+<%- include("partials/footer") %>

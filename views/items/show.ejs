@@ -1,0 +1,36 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/navbar") %>
+<main class="container page-space">
+  <%- include("../partials/alerts") %>
+  <a class="back-link mb-4" href="/items"><i data-lucide="arrow-left" class="icon-sm"></i> Back to explore</a>
+  <div class="row g-4 g-lg-5 align-items-start">
+    <div class="col-lg-6">
+      <div class="detail-photo">
+        <% if (listing.image_path) { %><img src="<%= listing.image_path %>" alt="<%= listing.title %>"><% } else { %><span class="photo-placeholder"><i data-lucide="<%= listing.category_icon %>"></i></span><% } %>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <span class="eyebrow"><%= listing.category_name %></span>
+      <h1 class="page-title mt-2 mb-2"><%= listing.title %></h1>
+      <p class="text-secondary"><%= listing.condition %> condition</p>
+      <p class="detail-description"><%= listing.description || 'The owner has not added a description yet.' %></p>
+      <div class="detail-owner my-4"><span class="owner-avatar owner-avatar-lg"><%= listing.owner_name.split(' ').map(part => part[0]).slice(0, 2).join('').toUpperCase() %></span><span><strong><%= listing.owner_name %></strong><small>Student owner</small></span><span class="detail-price ms-auto"><%= formatPrice(listing.price_per_day) %></span></div>
+      <% if (!listing.is_available) { %>
+        <div class="alert alert-secondary">This listing is currently paused.</div>
+      <% } else if (user && String(user.id) === String(listing.owner_id)) { %>
+        <div class="alert alert-info">This is your listing. Manage it from <a href="/dashboard">your dashboard</a>.</div>
+      <% } else { %>
+        <% if (!user) { %><p class="small text-secondary">Log in to request this item from its owner.</p><% } %>
+        <form action="/items/<%= listing.id %>/requests" method="post" class="request-form">
+          <div class="row g-3">
+            <div class="col-sm-6"><label class="form-label" for="requestFrom">Borrow from</label><input class="form-control" id="requestFrom" name="request_from" type="date" min="<%= new Date().toISOString().slice(0, 10) %>" required></div>
+            <div class="col-sm-6"><label class="form-label" for="requestTo">Return by</label><input class="form-control" id="requestTo" name="request_to" type="date" min="<%= new Date().toISOString().slice(0, 10) %>" required></div>
+            <div class="col-12"><label class="form-label" for="requestMessage">Message to the owner <span class="text-secondary fw-normal">(optional)</span></label><textarea class="form-control" id="requestMessage" name="message" rows="3" maxlength="500" placeholder="Share a little about when and where you'd like to meet."></textarea></div>
+            <div class="col-12"><button class="btn btn-primary btn-lg w-100" type="submit" <%= user ? '' : 'data-login-required="true"' %>>Request to borrow</button></div>
+          </div>
+        </form>
+      <% } %>
+    </div>
+  </div>
+</main>
+<%- include("../partials/footer") %>

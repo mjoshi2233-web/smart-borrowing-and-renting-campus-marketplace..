@@ -1,0 +1,19 @@
+<%- include("../partials/head", { title }) %>
+<%- include("../partials/navbar") %>
+<main class="auth-page container">
+  <div class="auth-card">
+    <a class="brand auth-brand mb-4" href="/"><span class="brand-mark"><i data-lucide="graduation-cap" class="brand-cap"></i><i data-lucide="shopping-cart" class="brand-cart"></i></span><span class="brand-copy"><strong>CampusMart</strong><small>Buy <span>•</span> Sell <span>•</span> Connect</small></span></a>
+    <span class="eyebrow">A better way to share</span>
+    <h1 class="h3 fw-semibold mt-2">Join your campus</h1>
+    <p class="text-secondary mb-4">Create an account to start borrowing and sharing.</p>
+    <% if (typeof error !== 'undefined') { %><div class="alert alert-danger" role="alert"><%= error %></div><% } %>
+    <form action="/register" method="post">
+      <div class="mb-3"><label class="form-label" for="fullName">Your name</label><input class="form-control" id="fullName" name="full_name" autocomplete="name" value="<%= typeof values !== 'undefined' && values.full_name ? values.full_name : '' %>" placeholder="e.g. Aanya Sharma" minlength="2" maxlength="100" required></div>
+      <div class="mb-3"><label class="form-label" for="email">Campus email</label><input class="form-control" id="email" name="email" type="email" autocomplete="email" value="<%= typeof values !== 'undefined' && values.email ? values.email : '' %>" placeholder="you@college.edu" required></div>
+      <div class="mb-3"><label class="form-label" for="password">Password</label><div class="password-input"><input class="form-control" id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="At least 8 characters" required><button type="button" class="password-toggle" data-toggle-password aria-label="Show password"><i data-lucide="eye"></i></button></div><div class="form-text">Use at least 8 characters.</div></div>
+      <button class="btn btn-primary w-100 mt-2" type="submit">Create account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+  </div>
+</main>
+<%- include("../partials/footer") %>

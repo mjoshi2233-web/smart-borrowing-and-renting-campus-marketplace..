@@ -1,0 +1,20 @@
+<article class="card listing-card h-100">
+  <a class="listing-photo" href="/items/<%= item.id %>" aria-label="View <%= item.title %>">
+    <% if (item.image_path) { %>
+      <img src="<%= item.image_path %>" alt="<%= item.title %>" loading="lazy">
+    <% } else { %>
+      <span class="photo-placeholder"><i data-lucide="<%= item.category_icon || 'package' %>"></i></span>
+    <% } %>
+    <span class="category-pill"><%= item.category_name %></span>
+    <% if (typeof item.matchPercent === "number") { %><span class="match-pill"><%= item.matchPercent %>% match</span><% } %>
+  </a>
+  <div class="card-body d-flex flex-column p-3">
+    <div class="small text-secondary mb-1"><%= item.category_name %> <span class="mx-1">·</span> <%= item.condition %></div>
+    <h3 class="h6 fw-semibold mb-3"><a class="listing-title" href="/items/<%= item.id %>"><%= item.title %></a></h3>
+    <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
+      <span class="price-label"><%= formatPrice(item.price_per_day) %></span>
+      <span class="owner-label"><span class="owner-avatar"><%= item.owner_name.split(' ').map(part => part[0]).slice(0, 2).join('').toUpperCase() %></span><span class="text-truncate"><%= item.owner_name %></span></span>
+    </div>
+    <a class="btn btn-outline-primary btn-sm w-100 mt-3" href="/items/<%= item.id %>">View details <i data-lucide="arrow-up-right" class="icon-sm ms-1"></i></a>
+  </div>
+</article>
